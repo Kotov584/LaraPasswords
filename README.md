@@ -1,6 +1,6 @@
 ## About LaraPasswords
 
-Laravel is a web application that allows you to store your passwords safely.
+LaraPasswords is a web application that allows you to store your passwords safely.
 
 ## License
 
