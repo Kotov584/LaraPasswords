@@ -1,6 +1,7 @@
 ## About LaraPasswords
 
 LaraPasswords is a web application that allows you to store your passwords safely.
+This project is under development.
 
 ## License
 
