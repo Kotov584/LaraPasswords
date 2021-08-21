@@ -46,7 +46,7 @@
                 <div class="dropdown-divider"></div>
                 <a href="/dashboard/profile/settings" class="dropdown-item"><!-- Download SVG icon from http://tabler-icons.io/i/settings -->
 	<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" /><circle cx="12" cy="12" r="3" /></svg>  Settings</a>
-                <a href="/dashboard/logout" class="dropdown-item"><!-- Download SVG icon from http://tabler-icons.io/i/logout -->
+                <a href="/dashboard/profile/logout" class="dropdown-item"><!-- Download SVG icon from http://tabler-icons.io/i/logout -->
 	<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" /><path d="M7 12h14l-3 -3m0 6l3 -3" /></svg> Logout</a>
               </div>
             </div>
@@ -101,10 +101,11 @@
                 <h2 class="page-title">
                   Passwords
                 </h2>
-                <div class="text-muted mt-1">1-{{ $passwords->count() }} of {{ $passwords->total() }} passwords</div>
+                <div class="text-muted mt-1">{{ $passwords->firstItem() }}-{{ $passwords->lastItem() }} of {{ $passwords->total() }} passwords</div>
               </div>
               <!-- Page title actions -->
-              <div class="col-auto ms-auto d-print-none">
+              <form method="post" action="/dashboard/passwords/search" class="col-auto ms-auto d-print-none">
+              @csrf
                 <div class="d-flex">
                   <input type="search" class="form-control d-inline-block w-9 me-3" placeholder="Search password…"/>
                   <a href="#" class="btn btn-primary">
@@ -113,7 +114,7 @@
                     New password
                   </a>
                 </div>
-              </div>
+              </form>
 
 
             </div>
@@ -154,7 +155,7 @@
                   </a>
                 </li>
                 @foreach ($passwords->getUrlRange(1, $passwords->lastPage()) as $key => $page)
-                  <li class="page-item"><a class="page-link" href="{{ $page }}">{{ $key }}</a></li> 
+                  <li class="page-item @if ($passwords->currentPage() == $key) active @endif"><a class="page-link" href="{{ $page }}">{{ $key }}</a></li> 
                 @endforeach 
                 <li class="page-item @if(!$passwords->hasMorePages()) disabled @endif">
                   <a class="page-link" href="{{ $passwords->nextPageUrl() }}">

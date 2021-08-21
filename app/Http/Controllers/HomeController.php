@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     public function index () {
-        $passwords = auth()->user()->passwords()->paginate(24);  
+        $passwords = auth()->user()->passwords()->paginate(50);  
         
-        return view('dashboard.index', ['passwords' => $passwords]);
+        return view('dashboard.index', compact('passwords'));
     }
 }

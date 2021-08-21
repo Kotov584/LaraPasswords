@@ -10,9 +10,10 @@
         Route::middleware(['auth'])->group(function () {
             Route::get('/', 'HomeController@index')->name('dashboard.index');
 
+            Route::post('/passwords/search', 'PasswordController@search');
             Route::resource('passwords', 'PasswordController'); 
             Route::resource('categories', 'CategoryController'); 
 
-            Route::get('/logout', 'UserSessionController@destroy')->name('logout');
+            Route::get('/profile/logout', 'UserSessionController@destroy')->name('logout');
         });
     });
