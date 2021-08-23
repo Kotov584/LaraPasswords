@@ -3,20 +3,28 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request; 
+use App\Http\Requests\CreatePasswordRequest;
+use App\Models\Password;
 
 class PasswordController extends Controller
 {
     public function index () {
-        $passwords = auth()->user()->passwords()->paginate(50);  
+        $passwords = auth()->user()->passwords()->paginate(25);  
+        $categories = auth()->user()->categories()->get();  
         
-        return view('dashboard.passwords.index', compact('passwords'));
+        return view('dashboard.passwords.index', compact('passwords', 'categories'));
     }
 
     public function create () {
 
     }
 
-    public function store () {
+    public function store (CreatePasswordRequest $request) {  
+        $user = Password::create($request->validated()); 
+        $passwords = auth()->user()->passwords()->paginate(25);  
+        $categories = auth()->user()->categories()->get();  
+        
+        return view('dashboard.passwords.index', compact('passwords', 'categories'));
 
     }
 

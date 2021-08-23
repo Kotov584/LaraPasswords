@@ -48,5 +48,9 @@ class User extends Authenticatable
 
     public function passwords() {
         return $this->hasMany(Password::class);
-     }
+    }
+    
+    public function categories() {
+        return $this->hasMany(Category::class);
+    }
 }

@@ -8,7 +8,7 @@
             Route::post('/register', 'UnRegisteredUserController@store');
         });
         Route::middleware(['auth'])->group(function () {
-            Route::get('/', 'HomeController@index')->name('dashboard.index');
+            Route::get('/', 'PasswordController@index')->name('dashboard.index');
 
             Route::post('/passwords/search', 'PasswordController@search');
             Route::resource('passwords', 'PasswordController'); 
