@@ -129,6 +129,7 @@
       </div>
     </div>
     @yield('modals')
+    @yield('scripts')
     <!-- Libs JS -->
     <!-- Tabler Core -->
     <script src="/dist/js/tabler.min.js"></script>
