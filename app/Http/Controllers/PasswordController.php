@@ -15,6 +15,10 @@ class PasswordController extends Controller
         return view('dashboard.passwords.index', compact('passwords', 'categories'));
     }
 
+    public function show () {
+
+    }
+
     public function create () {
 
     }
@@ -28,10 +32,6 @@ class PasswordController extends Controller
 
     }
 
-    public function show () {
-
-    }
-
     public function edit () {
 
     }
@@ -40,7 +40,7 @@ class PasswordController extends Controller
 
     }
 
-    public function delete () {
+    public function destroy () {
 
     }
 

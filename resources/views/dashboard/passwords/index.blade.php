@@ -32,13 +32,17 @@
                 <div class="card">
                   <div class="card-body p-4 text-center">
                     <span class="avatar avatar-xl mb-3 avatar-rounded" style="background-image: url({{ $password->image }})"></span>
-                    <h3 class="m-0 mb-1"><a href="/dashboard/passwords/{{ $password->id }}">{{ $password->name }}</a></h3>
+                    <h3 class="m-0 mb-1"><a href="#" data-bs-toggle="modal" data-bs-target="#modal-show-password">{{ $password->name }}</a></h3>
                     <div class="text-muted">{{ $password->description }}</div> 
                   </div>
                   <div class="d-flex">
-                    <a href="#" onclick="copy_text('{{ $password->password }}')" class="card-btn"><!-- Download SVG icon from http://tabler-icons.io/i/mail -->
+                    <a href="#" onclick="copy_text('{{ $password->password }}')" class="card-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><rect x="8" y="8" width="12" height="12" rx="2" /><path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" /></svg> 
                       Copy</a> 
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#modal-edit-password" class="card-btn"> 
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 7h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" /><path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" /><line x1="16" y1="5" x2="19" y2="8" /></svg>                      Edit</a> 
+                    <a href="#" class="card-btn" onclick="delete_password({{ $password->id }})">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="4" y1="7" x2="20" y2="7" /><line x1="10" y1="11" x2="10" y2="17" /><line x1="14" y1="11" x2="14" y2="17" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>                      Delete</a> 
                   </div>
                 </div>
               </div> 
@@ -129,10 +133,168 @@
 
       </div>
     </div>
+
+<div class="modal modal-blur fade" id="modal-edit-password" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        
+      <form method="post" action="/dashboard/passwords" class="modal-content">
+        @csrf
+        <input name="image" value="test" type="hidden" class="form-control"/>
+        <input name="user_id" value="1" type="hidden" class="form-control"/>
+          <div class="modal-header">
+            <h5 class="modal-title">Edit password</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row mb-3 align-items-end">
+              <div class="col-auto">
+                <a href="#" class="avatar avatar-upload rounded"> 
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                  <span class="avatar-upload-text">Add</span>
+                </a>
+              </div>
+              <div class="col">
+                <label class="form-label">Name</label>
+                <input name="name" type="text" class="form-control" />
+              </div>
+            </div> 
+            <div class="mb-3">
+                            <label class="form-label">Category</label>
+                            <select name="category_id" type="text" class="form-select" placeholder="Select a date" id="select-tags" value="">
+                              @foreach ($categories as $category) 
+                              <option value="{{ $category->id }}">{{ $category->name }}</option>
+                              @endforeach 
+                            </select>
+            </div>
+            <div class="row mb-3 align-items-end"> 
+              <div class="col">
+                <label class="form-label">Password</label>
+                <input name="password" type="text" class="form-control" />
+              </div>
+              <div class="col">
+                <label class="form-label">Repeat Password</label>
+                <input name="password_confirmation" type="text" class="form-control" />
+              </div>
+            </div> 
+            <div>
+              <label class="form-label">Description</label>
+              <textarea name="description" class="form-control"></textarea>
+            </div><br>
+            <div>
+              <label class="form-label">Note</label>
+              <textarea name="note" class="form-control"></textarea>
+            </div> 
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+<div class="modal modal-blur fade" id="modal-show-password" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        
+      <div class="modal-content">
+        @csrf
+        <input name="image" value="test" type="hidden" class="form-control"/>
+        <input name="user_id" value="1" type="hidden" class="form-control"/>
+          <div class="modal-header">
+            <h5 class="modal-title">Show password</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row mb-3 align-items-end">
+              <div class="col-auto">
+                <a href="#" class="avatar avatar-upload rounded"> 
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                  <span class="avatar-upload-text">Add</span>
+                </a>
+              </div>
+              <div class="col">
+                <label class="form-label">Name</label>
+                <input name="name" type="text" class="form-control" />
+              </div>
+            </div> 
+            <div class="mb-3">
+                            <label class="form-label">Category</label>
+                            <select name="category_id" type="text" class="form-select" placeholder="Select a date" id="select-tags" value="">
+                              @foreach ($categories as $category) 
+                              <option value="{{ $category->id }}">{{ $category->name }}</option>
+                              @endforeach 
+                            </select>
+            </div>
+            <div class="row mb-3 align-items-end"> 
+              <div class="col">
+                <label class="form-label">Password</label>
+                <input name="password" type="text" class="form-control" />
+              </div>
+              <div class="col">
+                <label class="form-label">Repeat Password</label>
+                <input name="password_confirmation" type="text" class="form-control" />
+              </div>
+            </div> 
+            <div>
+              <label class="form-label">Description</label>
+              <textarea name="description" class="form-control"></textarea>
+            </div><br>
+            <div>
+              <label class="form-label">Note</label>
+              <textarea name="note" class="form-control"></textarea>
+            </div> 
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button> 
+          </div>
+        </div>
+
+      </div>
+    </div>
 @endsection
 @section('scripts')
 <script src="/dist/js/sweetalert.js"></script>
 <script>
+  function delete_password(id) {
+    Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {  
+              fetch('/api/remove/passwords/' + id)
+              .then((response) => {   
+              if (response.ok) {
+                  return response.json(); 
+              } else {
+                throw new Error('Something went wrong');
+              }
+              })
+              .then((data) => {
+                Swal.fire({
+                  title: 'Success',
+                  text: 'Deleted the password',
+                  icon: 'success',
+                  confirmButtonText: 'Ok'
+                }); 
+              })
+              .catch((error) => {
+                console.log(error);
+                Swal.fire({
+                  title: 'Ooops...',
+                  text: error,
+                  icon: 'error',
+                  confirmButtonText: 'Ok'
+                }); 
+              });
+            }
+        });
+  }
   function copy_text(text) {  
     navigator.clipboard.writeText(text);
     Swal.fire({
@@ -142,5 +304,5 @@
       confirmButtonText: 'Ok'
     });
   }
-</script>
+</script> 
 @endsection

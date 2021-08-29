@@ -1,4 +1,4 @@
-<?php
+<?php 
     Route::group(['prefix' => '/dashboard'], function() {
         Route::middleware(['guest'])->group(function () {
             Route::get('/login', 'UserSessionController@create')->name('login');
@@ -11,8 +11,11 @@
             Route::get('/', 'PasswordController@index')->name('dashboard.index');
 
             Route::post('/passwords/search', 'PasswordController@search');
-            Route::resource('passwords', 'PasswordController'); 
-            Route::resource('categories', 'CategoryController'); 
+            Route::get('/passwords', 'PasswordController@index'); 
+            Route::post('/passwords', 'PasswordController@store');
+
+            Route::get('/categories', 'CategoryController@create'); 
+            Route::post('/categories', 'CategoryController@store');
 
             Route::get('/profile/logout', 'UserSessionController@destroy')->name('logout');
         });
